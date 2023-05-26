@@ -19,9 +19,10 @@ import Logout from './pages/Logout';
 import NotFound from './pages/NotFound';
 
 import Protect from './features/Protect';
-import store from './data/store';
+import store from './redux/store';
 
 import './styles/rectify.scss';
+import './styles/root.scss';
 import './styles/main.scss';
 import './styles/media.scss';
 
@@ -29,7 +30,7 @@ const router: any = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Navbar />} errorElement={<Error />}>
         <Route index element={<Home />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="about" element={<Protect component={About} />} />
+        <Route path="about" element={<About />} />
         <Route path="details" element={<Protect component={Details} />}>
             <Route path=":id" />
         </Route>

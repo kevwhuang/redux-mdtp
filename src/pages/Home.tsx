@@ -1,18 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 
-function mapStateToProps(state: any): Object {
-    return { data: state.data };
+import actions from '../redux/actions';
+
+function mapStateToProps(state: State): { authenticated: boolean, cars: Cars[] } {
+    return {
+        authenticated: state.authenticated,
+        cars: state.cars,
+    };
+}
+
+function mapDispatchToProps(dispatch: any): any {
+    const { deleteCar }: { deleteCar: any } = actions;
+
+    return bindActionCreators({ deleteCar }, dispatch);
 }
 
 function Home(props: any): React.ReactElement {
-    const data: Object[] = props.data;
+    const cars: Object[] = props.cars;
+
+    function handleClick(id: number): void {
+        props.deleteCar(id);
+    }
 
     return (
         <div className="cards">
-            {data.map((car: any): React.ReactElement => (
+            {cars.map((car: any): React.ReactElement => (
                 <div key={uuid()}>
                     <h6>{car['Name'].toUpperCase()}</h6>
                     <ul>
@@ -23,10 +39,15 @@ function Home(props: any): React.ReactElement {
                     <Link className="details-link" to={`details/${car.id}`}>
                         View Details
                     </Link>
+                    {props.authenticated &&
+                        <button className="delete" onClick={() => handleClick(car.id)}>
+                            Delete
+                        </button>
+                    }
                 </div>
             ))}
         </div>
     );
 }
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

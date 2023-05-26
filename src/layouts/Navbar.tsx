@@ -1,30 +1,33 @@
 import React from 'react';
-import cookie from 'cookie';
 import { Link, Outlet } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { AppBar, Toolbar, Typography } from '@mui/material';
 
-import NavbarContext from '../contexts/NavbarContext';
+function mapStateToProps(state: State): { authenticated: boolean } {
+    return { authenticated: state.authenticated };
+}
 
-function Navbar(): React.ReactElement {
-    const [isLoggedIn, setIsLoggedIn]: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
-        = React.useState(cookie.parse(document.cookie)['logged_in'] ? true : false);
-
+function Navbar(props: any): React.ReactElement {
     return (
-        <NavbarContext.Provider value={setIsLoggedIn}>
+        <>
             <AppBar position="relative">
                 <Toolbar>
-                    <Typography className="header" variant="h4" style={{ flexGrow: '1' }}>REACT ROUTER</Typography>
+                    <Typography className="header" variant="h4" style={{ flexGrow: '1' }}>
+                        REACT ROUTER
+                    </Typography>
                     <div className="navbar">
                         <Link className="nav-link" to="">Home</Link>
                         <Link className="nav-link" to="about">About</Link>
-                        {isLoggedIn && <Link className="nav-link" to="logout">Logout</Link>}
+                        {props.authenticated &&
+                            <Link className="nav-link" to="logout">Logout</Link>
+                        }
                     </div>
                 </Toolbar>
             </AppBar>
             <Outlet />
-        </NavbarContext.Provider>
+        </>
     );
 }
 
-export default Navbar;
+export default connect(mapStateToProps)(Navbar);

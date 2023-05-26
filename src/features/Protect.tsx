@@ -1,8 +1,18 @@
 import React from 'react';
 import cookie from 'cookie';
 import { Navigate } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import NavbarContext from '../contexts/NavbarContext';
+import actions from '../redux/actions';
+
+const ProtectContainer: any = connect(null, mapDispatchToProps)(Protect);
+
+function mapDispatchToProps(dispatch: any): any {
+    const { logIn }: { logIn: any } = actions;
+
+    return bindActionCreators({ logIn }, dispatch);
+}
 
 function checkAuth(): boolean {
     const cookies: Record<string, string> = cookie.parse(document.cookie);
@@ -25,12 +35,9 @@ function checkAuth(): boolean {
 function Protect(props: any): React.ReactElement {
     const { component: Component, ...rest }: any = props;
 
-    const setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
-        = React.useContext(NavbarContext);
-
     if (checkAuth()) {
         React.useEffect((): void => {
-            setIsLoggedIn(true);
+            props.logIn();
         }, []);
 
         return <Component {...rest} />;
@@ -39,4 +46,4 @@ function Protect(props: any): React.ReactElement {
     return <Navigate to="/" />;
 }
 
-export default Protect;
+export default ProtectContainer;

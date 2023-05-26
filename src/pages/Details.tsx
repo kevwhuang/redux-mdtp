@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 
-function mapStateToProps(state: any): Object {
-    return { data: state.data };
+function mapStateToProps(state: State): { cars: Cars[] } {
+    return { cars: state.cars };
 }
 
 function Details(props: any): React.ReactElement {
-    const data: Object[] = props.data;
+    const cars: Cars[] = props.cars;
     const params: Readonly<any> = useParams();
-    const raw: any = data[params.id - 1];
+    const raw: any = cars.filter(e => e.id === Number(params.id))[0];
 
     const fields: any = {
         Acceleration: raw['Acceleration'],

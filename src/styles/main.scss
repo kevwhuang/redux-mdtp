@@ -1,7 +1,3 @@
-html {
-    font-family: Roboto, Helvetica, Arial, sans-serif;
-}
-
 .about {
     margin: auto;
     text-align: center;
@@ -44,6 +40,16 @@ html {
     }
 }
 
+.delete {
+    border: none;
+    color: blue;
+    display: block;
+    margin: auto;
+
+    &:active {
+        color: rgb(250, 100, 250);
+    }
+}
 
 .details {
     margin: auto;

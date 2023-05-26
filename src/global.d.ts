@@ -1,6 +1,4 @@
-import data from '../data/data.json';
-
-interface Data {
+interface Cars {
     Acceleration: number,
     Cylinders: number,
     Displacement: number,
@@ -13,6 +11,7 @@ interface Data {
     id: number,
 }
 
-const state: { data: Data[] } = { data: data };
-
-export default state;
+interface State {
+    authenticated: boolean,
+    cars: Cars[],
+}
